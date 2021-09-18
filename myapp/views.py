@@ -6,6 +6,7 @@ from django.views.generic import View
 from django.http import HttpResponseRedirect
 import datetime
 from .forms import LoginForm
+from django.core.paginator import Paginator
 
 class ItemListView(View):
     
@@ -19,8 +20,15 @@ class SaleListView(View):
     
     def get(self, request):
 
-        sales = Sale.objects.all()
-        context = {"sales": sales}
+        sales = Sale.objects.order_by('-date_sale')
+
+        sales_paginator = Paginator(sales, 5)
+
+        page_num = request.GET.get('page')
+
+        page = sales_paginator.get_page(page_num)
+
+        context = {"page": page}
         return render(request, "sales_list.html", context)
 
 class BuyView(View):

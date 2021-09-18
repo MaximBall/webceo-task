@@ -16,7 +16,7 @@
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <h6 class="border-bottom pb-2 mb-0">Sales List</h6>
 
-    {% for sale in sales %}
+    {% for sale in page.object_list %}
 
     <div class="d-flex text-muted pt-3">
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
@@ -34,12 +34,25 @@
     
     {% endfor %}
 
-
 </div>
+<hr>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-item"><a class="page-link" href="{% url 'sales_list' %}?page={{ page.previous_page_number }}">Previous Page</a></li>
+        {% endif %}
+        {% if page.has_next %}
+        <li class="page-item"><a class="page-link" href="{% url 'sales_list' %}?page={{ page.next_page_number }}">Next Page</a></li>
+        {% endif %}
+    </ul>
+  </nav>
+
+
 {% else %}
 <a href="{% url 'login' %}" class="btn btn-outline-secondary">Please Sign In</a>
 {% endif %}
-<hr>
+
     
 
 {% endblock %}
