@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+from .views import ItemListView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.item_list, name='item_list'),
+    path('', ItemListView.as_view(), name='item_list')
 ]
