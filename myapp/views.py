@@ -15,6 +15,14 @@ class ItemListView(View):
         context = {"items": items}
         return render(request, "item_list.html", context)
 
+class SaleListView(View):
+    
+    def get(self, request):
+
+        sales = Sale.objects.all()
+        context = {"sales": sales}
+        return render(request, "sales_list.html", context)
+
 class BuyView(View):
 
     def get(self, request, name):
@@ -59,7 +67,6 @@ class LoginView(View):
             form = LoginForm(request.POST or None)
             context = {"form": form}
             return render(request, "login.html", context)
-
         except KeyError:
             form = LoginForm(request.POST or None)
             context = {"form": form}

@@ -8,30 +8,26 @@
 
 <hr>
 {% if user.is_authenticated %}
-    <a href="{% url 'login' %}" class="btn btn-outline-secondary">User - {{ user.username }} - LoOut</a>
-    <a href="{% url 'sales_list' %}" class="btn btn-outline-secondary">Sales List</a>
-    {% else %}
-    <a href="{% url 'login' %}" class="btn btn-outline-secondary">LogIN</a>
-{% endif %}
-<hr>
 
+<h3>User - {{ user.username }}</h3>
 
+<a href="{% url 'item_list' %}" class="btn btn-outline-secondary">Items List</a>
 
-    
 <div class="my-3 p-3 bg-body rounded shadow-sm">
-    <h6 class="border-bottom pb-2 mb-0">Items List</h6>
+    <h6 class="border-bottom pb-2 mb-0">Sales List</h6>
 
-    {% for item in items %}
+    {% for sale in sales %}
 
     <div class="d-flex text-muted pt-3">
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
 
       <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
         <div class="d-flex justify-content-between">
-          <strong class="text-gray-dark">{{ item.name }} - {{ item.price }}</strong>
-          
-          <a href="{% url 'buy_item' item.name %}">Buy</a>
-        
+          <strong class="text-gray-dark">Name Item - {{ sale.item }};
+               Employee - {{ sale.employe }};
+               Total Price - {{ sale.total_price }};
+               Date sale - {{ sale.date_sale }}
+            </strong>
         </div>
       </div>
     </div>
@@ -40,6 +36,10 @@
 
 
 </div>
+{% else %}
+<a href="{% url 'login' %}" class="btn btn-outline-secondary">Please Sign In</a>
+{% endif %}
+<hr>
     
 
 {% endblock %}
