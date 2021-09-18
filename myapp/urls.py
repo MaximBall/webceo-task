@@ -3,13 +3,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import ItemListView, BuyView
+from .views import ItemListView, BuyView, LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', ItemListView.as_view(), name='item_list'),
     path('buy/<str:name>', BuyView.as_view(), name='buy_item'),
+    path('login', LoginView.as_view(), name='login'),
 ]
 
 if settings.DEBUG:

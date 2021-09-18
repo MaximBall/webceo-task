@@ -6,6 +6,16 @@
 
 {% block content %}
 
+<hr>
+{% if user.is_authenticated %}
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary">User - {{ user.username }} - LoOut</a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary">LogIN</a>
+{% endif %}
+<hr>
+
+
+
     
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <h6 class="border-bottom pb-2 mb-0">Item List</h6>

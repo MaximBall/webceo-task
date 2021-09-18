@@ -1,10 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Employee, Item, Sale
 from django.views.generic import View
 from django.http import HttpResponseRedirect
 import datetime
-
+from .forms import LoginForm
 
 class ItemListView(View):
     
@@ -47,3 +48,31 @@ class BuyView(View):
         new_sale.save()
         route = "/"
         return HttpResponseRedirect(route)
+
+
+class LoginView(View):
+
+    def get(self, request):
+        try:
+            del request.session["data"]  
+            logout(request)
+            form = LoginForm(request.POST or None)
+            context = {"form": form}
+            return render(request, "login.html", context)
+
+        except KeyError:
+            form = LoginForm(request.POST or None)
+            context = {"form": form}
+            return render(request, "login.html", context)
+
+    def post(self, request):
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                request.session["data"] = user.username
+                return HttpResponseRedirect("/")
+        return render(request, "login.html", {"form": form})
