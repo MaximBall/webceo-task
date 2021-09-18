@@ -1,0 +1,30 @@
+[
+    {
+      "model": "myapp.employee",
+      "pk": 2,
+      "fields": {
+        "user": "1"
+      }
+    },
+    {
+      "model": "myapp.item",
+      "pk": 2,
+      "fields": {
+        "name": "Banana",
+        "employe": "1",
+        "price": "40.00"
+      }
+    },
+    {
+      "model": "myapp.sale",
+      "pk": 1,
+      "fields": {
+        "item": "1",
+        "employe": "1",
+        "count": "1",
+        "total_price": "40.00",
+        "price_one_item": "40.00",
+        "date_sale": "2021-09-17"
+      }
+    }
+  ]
