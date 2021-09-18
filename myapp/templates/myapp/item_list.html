@@ -18,7 +18,9 @@
       <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
         <div class="d-flex justify-content-between">
           <strong class="text-gray-dark">{{ item.name }} - {{ item.price }}</strong>
-          <a href="#">Buy</a>
+          
+          <a href="{% url 'buy_item' item.name %}">Buy</a>
+        
         </div>
       </div>
     </div>

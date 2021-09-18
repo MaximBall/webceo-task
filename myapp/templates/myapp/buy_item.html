@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Buy Item
+{% endblock %}
+
+{% block content %}
+
+    
+<div class="bg-light p-5 rounded">
+    <h1>Item Name - {{ name }}</h1>
+
+
+    <form method="post" class="ckeck">
+        {% csrf_token %}
+      
+          <div class="mb-3">
+              <label for="formGroupExampleInput" class="form-label"><h5>Enter count item</h5></label>
+              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="For Example: 3" name="count_item">
+          </div>
+      
+          <hr>
+      
+          
+         <select class="form-select" aria-label="Default select example" name="dropdown">
+        <option selected>Select employe and price</option>
+      
+                  {% for item_one in items %}
+      
+        <option  value="{{ item_one.name }}" name="item_one">{{ item_one.employe }} - {{ item_one.price }}</option>
+      
+      
+                  {% endfor %}
+      
+        </select>
+      
+          <hr>
+          <button type="submit" class="btn btn-success me-2">Buy Item</button>
+      
+      </form>
+    
+  </div>
+    
+
+{% endblock %}
