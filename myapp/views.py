@@ -84,7 +84,6 @@ class LoginView(View):
 
     def get(self, request):
         try:
-            del request.session["data"]  
             logout(request)
             form = LoginForm(request.POST or None)
             context = {"form": form}
@@ -102,8 +101,13 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                request.session["data"] = user.username
                 return HttpResponseRedirect("/")
         return render(request, "login.html", {"form": form})
 
+class HistoryPriceView(View):
+    
+    def get(self, request):
 
+        history_price = ChangePrice.objects.all()
+        context = {"prices": history_price}
+        return render(request, "history_price.html", context)
