@@ -54,3 +54,19 @@ class Sale(models.Model):
 
     def __str__(self):
         return "{}".format(self.item, self.date_sale, self.total_price)
+
+    
+class ChangePrice(models.Model):
+        
+    item = models.ForeignKey(
+        Item, verbose_name="Продукт", on_delete=models.CASCADE
+    )
+
+    date_change = models.DateTimeField()
+
+    price = models.DecimalField(
+        max_digits=7, decimal_places=2
+    )
+
+    def __str__(self):
+        return "{}".format(self.item, self.date_change)

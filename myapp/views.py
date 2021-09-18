@@ -1,12 +1,26 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Employee, Item, Sale
+from .models import Employee, Item, Sale, ChangePrice
 from django.views.generic import View
 from django.http import HttpResponseRedirect
 import datetime
 from .forms import LoginForm
 from django.core.paginator import Paginator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
+@receiver(post_save, sender = Item)
+def change_price_item(instance, **kwargs):
+    
+    new_change_price = ChangePrice(
+        item = instance,
+        date_change = datetime.datetime.now(),
+        price = instance.price
+    )
+    new_change_price.save()
+
 
 class ItemListView(View):
     
@@ -91,3 +105,5 @@ class LoginView(View):
                 request.session["data"] = user.username
                 return HttpResponseRedirect("/")
         return render(request, "login.html", {"form": form})
+
+
