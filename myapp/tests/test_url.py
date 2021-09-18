@@ -18,3 +18,7 @@ class StatusCodeTests(TestCase):
    def test_sales_list_url(self):
        response = self.client.get('/sales')
        self.assertEqual(response.status_code, 200)
+   
+   def test_history_price_url(self):
+       response = self.client.get('/history')
+       self.assertEqual(response.status_code, 200)
