@@ -20,6 +20,7 @@ def change_price_item(instance, **kwargs):
         price = instance.price
     )
     new_change_price.save()
+    return new_change_price
 
 
 class ItemListView(View):
