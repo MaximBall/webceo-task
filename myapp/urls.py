@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', ItemListView.as_view(), name='item_list'),
-    path('buy/<str:name>', BuyView.as_view(), name='buy_item'),
+    path('buy/<str:name>/', BuyView.as_view(), name='buy_item'),
     path('login/', LoginView.as_view(), name='login'),
     path('sales/', SaleListView.as_view(), name='sales_list'),
     path('history/', HistoryPriceView.as_view(), name='history_price'),

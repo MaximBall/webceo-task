@@ -8,17 +8,17 @@ class StatusCodeTests(TestCase):
        self.assertEqual(response.status_code, 200)
 
    def test_buy_apple_url(self):
-       response = self.client.get('/buy/apple')
+       response = self.client.get('/buy/apple/')
        self.assertEqual(response.status_code, 200)
 
    def test_login_url(self):
-       response = self.client.get('/login')
+       response = self.client.get('/login/')
        self.assertEqual(response.status_code, 200)
 
    def test_sales_list_url(self):
-       response = self.client.get('/sales')
+       response = self.client.get('/sales/')
        self.assertEqual(response.status_code, 200)
    
    def test_history_price_url(self):
-       response = self.client.get('/history')
+       response = self.client.get('/history/')
        self.assertEqual(response.status_code, 200)
