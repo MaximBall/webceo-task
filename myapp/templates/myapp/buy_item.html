@@ -8,38 +8,16 @@
 
     
 <div class="bg-light p-5 rounded">
-    <h1>Item Name - {{ name }}</h1>
 
-
-    <form method="post" class="ckeck">
+    <h3>Make new sale</h3>
+    <hr>
+      <form action="" method="post">
         {% csrf_token %}
-      
-          <div class="mb-3">
-              <label for="formGroupExampleInput" class="form-label"><h5>Enter count item</h5></label>
-              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="For Example: 3" name="count_item">
-          </div>
-      
-          <hr>
-      
-          
-         <select class="form-select" aria-label="Default select example" name="dropdown">
-        <option selected>Select employe and price</option>
-      
-                  {% for item_one in items %}
-      
-        <option  value="{{ item_one.employe }} {{ item_one.price }}" name="item_one">{{ item_one.employe }} - {{ item_one.price }}</option>
-      
-      
-                  {% endfor %}
-      
-        </select>
-      
-          <hr>
-          <button type="submit" class="btn btn-success me-2">Buy Item</button>
-      
+        {{ form.as_p }}
+        <input  class="btn btn-primary" type="submit" value="Save" />
       </form>
     
-  </div>
+</div>
     
 
 {% endblock %}

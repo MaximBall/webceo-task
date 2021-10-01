@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse 
+from datetime import datetime
 
 class Employee(models.Model):
 
@@ -27,7 +28,7 @@ class Item(models.Model):
     )
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "Item - {0}, Price - {1}".format(self.name, self.price)
 
 
 class Sale(models.Model):
@@ -53,8 +54,17 @@ class Sale(models.Model):
     date_sale = models.DateField()
 
     def __str__(self):
-        return "{}".format(self.item, self.date_sale, self.total_price)
+        return "Item - {0}, Total price - {1}".format(self.item, self.total_price)
 
+    def get_absolute_url(self):
+        return reverse('sales_list')
+
+    def save(self, *args, **kwargs):
+        self.employe = self.item.employe
+        self.date_sale = datetime.now()
+        self.price_one_item = self.item.price
+        self.total_price = self.item.price * self.count
+        super(Sale, self).save(*args, **kwargs)
     
 class ChangePrice(models.Model):
         
@@ -62,11 +72,11 @@ class ChangePrice(models.Model):
         Item, verbose_name="Продукт", on_delete=models.CASCADE
     )
 
-    date_change = models.DateTimeField()
+    date_change = models.DateTimeField(default=datetime.now())
 
     price = models.DecimalField(
         max_digits=7, decimal_places=2
     )
 
     def __str__(self):
-        return "{}".format(self.item, self.date_change)
+        return "Item - {0}, DateTime update price - {1}".format(self.item, self.date_change)
