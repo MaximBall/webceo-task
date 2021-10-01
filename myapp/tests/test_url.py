@@ -9,7 +9,7 @@ class StatusCodeTests(TestCase):
        self.assertEqual(response.status_code, 200)
 
     def test_buy_apple_url(self):
-       response = self.client.get('/buy/apple/')
+       response = self.client.get('/sale/new/')
        self.assertEqual(response.status_code, 200)
 
     def test_login_url(self):
@@ -30,5 +30,5 @@ class StatusCodeTests(TestCase):
             'name': 'new-apple',
             'employe': 'admin',
             'price': '40.00'
-        })
-        self.assertEqual(response.status_code, 302)
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)

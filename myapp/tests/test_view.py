@@ -1,6 +1,6 @@
 from django.test import TestCase
 from ..models import Item, ChangePrice, Employee, User
-from ..views import change_price_item
+from unittest.mock import patch
 
 
 class ExistItemNameTests(TestCase):
@@ -20,14 +20,16 @@ class ExistItemNameTests(TestCase):
             self.assertTrue(resp_price_name.price == db_price_name.price)        
         self.assertQuerysetEqual(response.context['prices'], prices)
         self.assertTrue(len(response.context['prices']) == len(prices))
-
-    def test_change_price(self):
+    
+    @patch('myapp.views.ChangePrice.objects.create')
+    def test_post_save_signal(self, create):
         user = User(username='qwerty', password='13213')
         user.save()
         empl = Employee(user=user)
         empl.save()
-        item = Item(employe=empl, name='apple', price=20.00)
-        item.save()
-        ch_price = change_price_item(item)
-        self.assertTrue(item.price == ch_price.price)
-        
+        Item.objects.create(
+            employe=empl,
+            name='apple',
+            price=20.00
+        )
+        self.assertEquals(1, create.call_count)

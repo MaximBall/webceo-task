@@ -15,15 +15,13 @@ from django.views.generic.edit import CreateView
 
 
 @receiver(post_save, sender = Item)
-def change_price_item(instance, **kwargs):
-    
-    new_change_price = ChangePrice(
-        item = instance,
-        date_change = datetime.datetime.now(),
-        price = instance.price
-    )
-    new_change_price.save()
-    return new_change_price
+def change_price_item(instance, created, **kwargs):
+    if created:
+        ChangePrice.objects.create(
+            item = instance,
+            date_change = datetime.datetime.now(),
+            price = instance.price
+        )
 
 
 class ItemListView(View):
