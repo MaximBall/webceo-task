@@ -16,6 +16,7 @@ class ExistItemNameTests(TestCase):
             self.assertTrue(resp_items.name == db_items.name)
         self.assertQuerysetEqual(response.context['items'], items)
         self.assertTrue(len(response.context['items']) == len(items))
+        self.assertTrue(items)
 
     def test_equal_item_change_price_view(self):
         response = self.client.get('/history/') 
