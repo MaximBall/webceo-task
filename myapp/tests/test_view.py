@@ -1,14 +1,18 @@
 from django.test import TestCase
-from ..models import Item, ChangePrice, Employee, User
+from django.urls.base import reverse
+from ..models import Item, ChangePrice, Employee, Sale, User
 from unittest.mock import patch
 
 
 class ExistItemNameTests(TestCase):
-   
+    fixtures = ['./fixtures/models_data.json',]
+
+
     def test_exist_item_name_view(self):
         response = self.client.get('/') 
         items = Item.objects.all()
         for resp_items, db_items in zip(response.context['items'], items):
+            # print(resp_items.name, '----', db_items.name)
             self.assertTrue(resp_items.name == db_items.name)
         self.assertQuerysetEqual(response.context['items'], items)
         self.assertTrue(len(response.context['items']) == len(items))
@@ -33,3 +37,15 @@ class ExistItemNameTests(TestCase):
             price=20.00
         )
         self.assertEquals(1, create.call_count)
+
+    def test_html_items(self):
+        response = self.client.get('/') 
+        self.assertTemplateUsed(response, 'item_list.html') 
+
+class Fixture(TestCase):
+        fixtures = ['./fixtures/models_data.json',]
+
+        def test_equal_data_from_fixture(self):
+            sale = Sale.objects.get(pk=1)
+            self.assertEquals(sale.price_one_item, 40.00)
+
