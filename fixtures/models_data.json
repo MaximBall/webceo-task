@@ -44,5 +44,14 @@
         "price_one_item": "40.00",
         "date_sale": "2021-09-17"
       }
+    },
+    {
+      "model": "myapp.changeprice",
+      "pk": 1,
+      "fields": {
+        "item": "1",
+        "price": "40.00",
+        "date_change": "2021-09-17"
+      }
     }
   ]

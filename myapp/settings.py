@@ -115,10 +115,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticroot') # пустая папка, в которую собирается вся статика collectstatic
+
+STATIC_URL = '/static/' # URL для шаблонов
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'assets')
 ]
 
 # Default primary key field type

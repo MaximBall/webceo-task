@@ -10,8 +10,7 @@ class Employee(models.Model):
     )
 
     def __str__(self):
-        return "{}".format(self.user)
-
+        return self.user.username
 
 class Item(models.Model):
     

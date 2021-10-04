@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -31,7 +32,9 @@ class ItemListView(View):
         context = {"items": items}
         return render(request, "item_list.html", context)
 
-class SaleListView(View):
+class SaleListView(LoginRequiredMixin, View):
+
+    login_url = '/login/'
     
     def get(self, request):
 
@@ -76,8 +79,10 @@ class LoginView(View):
                 return HttpResponseRedirect("/")
         return render(request, "login.html", {"form": form})
 
-class HistoryPriceView(View):
+class HistoryPriceView(LoginRequiredMixin, View):
     
+    login_url = '/login/'
+
     def get(self, request):
 
         history_price = ChangePrice.objects.all()

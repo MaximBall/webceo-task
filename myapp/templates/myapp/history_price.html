@@ -7,7 +7,6 @@
 {% block content %}
 
 <hr>
-{% if user.is_authenticated %}
 
 <h3>User - {{ user.username }}</h3>
 
@@ -38,9 +37,5 @@
 <hr>
 
 
-{% else %}
-<a href="{% url 'login' %}" class="btn btn-outline-secondary">Please Sign In</a>
-{% endif %}
-    
 
 {% endblock %}
