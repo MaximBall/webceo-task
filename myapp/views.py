@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.utils.html import DOTS
 from .models import Employee, Item, Sale, ChangePrice
 from django.views.generic import View
 from django.http import HttpResponseRedirect
-import datetime
-from .forms import LoginForm
 from django.core.paginator import Paginator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -12,6 +11,7 @@ from django.dispatch import receiver
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.contrib.auth.forms import AuthenticationForm
 
 
 @receiver(post_save, sender = Item)
@@ -56,24 +56,25 @@ class LoginView(View):
     def get(self, request):
         try:
             logout(request)
-            form = LoginForm(request.POST or None)
+            form = AuthenticationForm(request)
             context = {"form": form}
             return render(request, "login.html", context)
         except KeyError:
-            form = LoginForm(request.POST or None)
+            form = AuthenticationForm(request)
             context = {"form": form}
             return render(request, "login.html", context)
-
+        
     def post(self, request):
-        form = LoginForm(request.POST or None)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            user = authenticate(username=username, password=password)
-            if user:
-                login(request, user)
-                return HttpResponseRedirect("/")
-        return render(request, "login.html", {"form": form})
+            user = form.get_user()
+            login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            form = AuthenticationForm(request)
+            message = 'Username or password is not valid'
+            context = {'message': message, 'form': form}
+            return render(request, "login.html", context)
 
 class HistoryPriceView(LoginRequiredMixin, TemplateView):
 
