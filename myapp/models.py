@@ -50,7 +50,7 @@ class Sale(models.Model):
         max_digits=7, decimal_places=2
     )
 
-    date_sale = models.DateField()
+    date_sale = models.DateField(auto_now=True)
 
     def __str__(self):
         return "Item - {0}, Total price - {1}".format(self.item, self.total_price)
@@ -60,7 +60,6 @@ class Sale(models.Model):
 
     def save(self, *args, **kwargs):
         self.employe = self.item.employe
-        self.date_sale = datetime.now()
         self.price_one_item = self.item.price
         self.total_price = self.item.price * self.count
         super(Sale, self).save(*args, **kwargs)
@@ -71,7 +70,7 @@ class ChangePrice(models.Model):
         Item, verbose_name="Продукт", on_delete=models.CASCADE
     )
 
-    date_change = models.DateTimeField(default=datetime.now())
+    date_change = models.DateTimeField(auto_now=True)
 
     price = models.DecimalField(
         max_digits=7, decimal_places=2

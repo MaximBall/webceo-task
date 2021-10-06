@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from .models import Employee, Item, Sale, ChangePrice
 from django.views.generic import View
 from django.http import HttpResponseRedirect
@@ -12,14 +11,13 @@ from django.dispatch import receiver
 
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.views.generic import TemplateView
 
 
 @receiver(post_save, sender = Item)
 def change_price_item(instance, **kwargs):
     ChangePrice.objects.create(
         item = instance,
-        date_change = datetime.datetime.now(),
         price = instance.price
     )
 
@@ -33,8 +31,6 @@ class ItemListView(View):
         return render(request, "item_list.html", context)
 
 class SaleListView(LoginRequiredMixin, View):
-
-    login_url = '/login/'
     
     def get(self, request):
 
@@ -79,12 +75,11 @@ class LoginView(View):
                 return HttpResponseRedirect("/")
         return render(request, "login.html", {"form": form})
 
-class HistoryPriceView(LoginRequiredMixin, View):
-    
-    login_url = '/login/'
+class HistoryPriceView(LoginRequiredMixin, TemplateView):
 
-    def get(self, request):
+    template_name = "history_price.html"
 
-        history_price = ChangePrice.objects.all()
-        context = {"prices": history_price}
-        return render(request, "history_price.html", context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['prices'] = ChangePrice.objects.all()
+        return context

@@ -33,10 +33,12 @@ class ExistItemNameTests(TestCase):
             name='some_item',
             price=50.00
         )
-        cp = ChangePrice.objects.latest('id')
         item = Item.objects.latest('id')
-        self.assertEqual(cp.price, item.price)
+        item.price = 30.00 
+        item.save()
+        cp = ChangePrice.objects.latest('id')
+        self.assertEquals(cp.price, item.price)
 
     def test_html_items(self):
         response = self.client.get('/') 
-        self.assertTemplateUsed(response, 'item_list.html') 
+        self.assertTemplateUsed(response, 'item_list.html')
