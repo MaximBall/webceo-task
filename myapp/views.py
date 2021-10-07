@@ -12,6 +12,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic.edit import FormView
 
 
 @receiver(post_save, sender = Item)
@@ -30,51 +31,42 @@ class ItemListView(View):
         context = {"items": items}
         return render(request, "item_list.html", context)
 
-class SaleListView(LoginRequiredMixin, View):
+class SaleListView(LoginRequiredMixin, TemplateView):
     
-    def get(self, request):
-
+    template_name = 'sales_list.html'
+    
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
         sales = Sale.objects.order_by('-date_sale')
-
         sales_paginator = Paginator(sales, 5)
-
-        page_num = request.GET.get('page')
-
-        page = sales_paginator.get_page(page_num)
-
-        context = {"page": page}
-        return render(request, "sales_list.html", context)
-
+        page_num = self.request.GET.get('page')
+        context['page']=sales_paginator.get_page(page_num)
+        return context
+        
 class BuyViewCreate(CreateView):
     model = Sale
     template_name = 'buy_item.html'
     fields = ['item', 'count']
 
 
-class LoginView(View):
+class LoginView(FormView):
 
-    def get(self, request):
-        try:
-            logout(request)
-            form = AuthenticationForm(request)
-            context = {"form": form}
-            return render(request, "login.html", context)
-        except KeyError:
-            form = AuthenticationForm(request)
-            context = {"form": form}
-            return render(request, "login.html", context)
-        
-    def post(self, request):
-        form = AuthenticationForm(request, data=request.POST)
+    form_class = AuthenticationForm
+    template_name = 'login.html'
+    success_url = '/'
+
+    def get_initial(self):
+        if self.request.user.is_authenticated:
+            logout(self.request)
+        else: pass
+
+    def form_valid(self, form):
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
+            login(self.request, user)
             return HttpResponseRedirect('/')
         else:
-            form = AuthenticationForm(request)
-            message = 'Username or password is not valid'
-            context = {'message': message, 'form': form}
-            return render(request, "login.html", context)
+            return HttpResponseRedirect('/login/')
 
 class HistoryPriceView(LoginRequiredMixin, TemplateView):
 
